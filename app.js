@@ -58,11 +58,36 @@ function takeCommand(message) {
     } else if (message.includes("फेसबुक खोलो")) {
         window.open("https://facebook.com", "_blank");
         speak("फेसबुक खोल रहा हूँ...");
-    } 
-    // Add more commands in Hindi as needed
-    else {
-        window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
-        const finalText = "मैंने " + message + " के बारे में कुछ जानकारी गूगल पर पाई है";
-        speak(finalText);
+    } else {
+        // Use Gemini API for other queries
+        getGeminiResponse(message);
+    }
+}
+
+// Add Gemini API key (replace with your actual API key)
+const GEMINI_API_KEY = 'AIzaSyBza7IIhLh4hlYDSdan11fBfRntsM2U6pw';
+
+// Add a new function to interact with Gemini API
+async function getGeminiResponse(query) {
+    const apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+    
+    try {
+        const response = await fetch(`${apiUrl}?key=${GEMINI_API_KEY}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                contents: [{ parts: [{ text: query }] }]
+            })
+        });
+
+        const data = await response.json();
+        const answer = data.candidates[0].content.parts[0].text;
+        speak(answer);
+        content.textContent = answer;
+    } catch (error) {
+        console.error('Error:', error);
+        speak("माफ़ कीजिए, मुझे जवाब देने में समस्या हो रही है।");
     }
 }
