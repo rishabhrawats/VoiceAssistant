@@ -65,7 +65,7 @@ function takeCommand(message) {
 }
 
 // Add Gemini API key (replace with your actual API key)
-const GEMINI_API_KEY = 'AIzaSyBza7IIhLh4hlYDSdan11fBfRntsM2U6pw';
+const GEMINI_API_KEY = 'AIzaSyA6dcaVU2V76L1CQhGjaJxpp_5BeQsuCdc';
 
 // Add a new function to interact with Gemini API
 async function getGeminiResponse(query) {
